@@ -1,0 +1,11 @@
+.section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 1rem;
+}

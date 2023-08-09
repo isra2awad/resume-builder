@@ -23,7 +23,6 @@ function App() {
         personalInfo={personalInfo}
         setPersonalInfo={setPersonalInfo}
       />
-      {/* s */}
     </div>
   );
 }
