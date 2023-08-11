@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import PersonalInfo from "./components/PersonalInfo";
-// import Experience from "./components/Experience";
-// import Education from "./components/Education";
+import Experience from "./components/Experience";
+import Education from "./components/Education";
 // import Preview from "./components/Preview";
 
 function App() {
@@ -14,6 +14,7 @@ function App() {
   });
 
   const [experienceList, setExperienceList] = useState([]);
+
   const [educationList, setEducationList] = useState([]);
 
   return (
@@ -22,6 +23,14 @@ function App() {
       <PersonalInfo
         personalInfo={personalInfo}
         setPersonalInfo={setPersonalInfo}
+      />
+      <Experience
+        experienceList={experienceList}
+        setExperienceList={setExperienceList}
+      />
+      <Education
+        educationList={educationList}
+        setEducationList={setEducationList}
       />
     </div>
   );

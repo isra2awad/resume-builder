@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./PersonalInfo.css";
+import "./compnents.css";
 function PersonalInfo({ personalInfo, setPersonalInfo }) {
   const [isEditing, setIsEditing] = useState(true);
 
@@ -20,7 +20,7 @@ function PersonalInfo({ personalInfo, setPersonalInfo }) {
     <div className="section">
       <h2>Personal Information</h2>
       {isEditing ? (
-        <>
+        <div className="edit-personal">
           <input
             type="text"
             name="firstName"
@@ -53,7 +53,7 @@ function PersonalInfo({ personalInfo, setPersonalInfo }) {
           />
 
           <button onClick={handlePrintButton}>Print</button>
-        </>
+        </div>
       ) : (
         <>
           <p>First Name: {personalInfo.firstName}</p>
