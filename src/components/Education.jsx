@@ -1,16 +1,8 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-function Education() {
+function Education({ educationData, setEducationData, previewMode }) {
   const [editMode, setEditMode] = useState(true);
-  const [degreeArr, setDegreeArr] = useState([
-    {
-      school: "",
-      title: "",
-      date: "",
-      id: uuidv4(),
-    },
-  ]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,7 +15,7 @@ function Education() {
 
   const handleChange = (e) => {
     const { className, name, value } = e.target;
-    setDegreeArr((prevDegreeArr) =>
+    setEducationData((prevDegreeArr) =>
       prevDegreeArr.map((degree) =>
         degree.id === className ? { ...degree, [name]: value } : degree,
       ),
@@ -31,7 +23,7 @@ function Education() {
   };
 
   const handleAddNew = () => {
-    setDegreeArr((prevDegreeArr) =>
+    setEducationData((prevDegreeArr) =>
       prevDegreeArr.concat({
         school: "",
         title: "",
@@ -43,44 +35,48 @@ function Education() {
 
   const handleDelete = (e) => {
     const degreeId = e.target.className;
-    setDegreeArr((prevDegreeArr) =>
+    setEducationData((prevDegreeArr) =>
       prevDegreeArr.filter((degree) => degree.id !== degreeId),
     );
   };
 
   return (
     <div className="education-div content">
-      {editMode ? (
+      {editMode && !previewMode ? (
         <div className="edit-education-div">
-          <h4 className="form-header">
-            EDUCATION{" "}
-            <button onClick={handleSubmit} className="submit-button">
-              SUBMIT
-            </button>
-          </h4>
-          {degreeArr.map((item) => (
-            <div key={item.id}>
+          <h2 className="form-header">EDUCATION </h2>
+
+          {educationData.map((item) => (
+            <div className="form" key={item.id}>
               <input
                 type="text"
-                name="school"
-                placeholder="School"
-                value={item.school}
+                name="university"
+                placeholder="University"
+                value={item.university}
                 className={item.id}
                 onChange={handleChange}
               />
               <input
                 type="text"
-                name="title"
-                placeholder="Title"
-                value={item.title}
+                name="major"
+                placeholder="Major"
+                value={item.major}
                 className={item.id}
                 onChange={handleChange}
               />
               <input
-                type="text"
+                type="date"
                 name="date"
                 placeholder="Date"
                 value={item.date}
+                className={item.id}
+                onChange={handleChange}
+              />
+              <input
+                type="text"
+                name="grade"
+                placeholder="Grade"
+                value={item.grade}
                 className={item.id}
                 onChange={handleChange}
               />
@@ -89,31 +85,31 @@ function Education() {
               </button>
             </div>
           ))}
+          <div className="buttons">
+            <button onClick={handleSubmit} className="button">
+              SUBMIT
+            </button>
+            <button onClick={handleAddNew} className="button">
+              + ADD NEW
+            </button>
+          </div>
         </div>
       ) : (
-        <div>
+        <div className="preview">
           <h4 className="submitted-header">EDUCATION</h4>
-          <hr />
-          {degreeArr.map((item) => (
+
+          {educationData.map((item) => (
             <div key={item.id}>
-              <h5>{item.school}</h5>
-              <p>{item.title}</p>
+              <hr />
+              <h4>University: {item.university}</h4>
+              <p>Major: {item.major}</p>
               {item.date !== "" && <p>Graduated {item.date}</p>}
             </div>
           ))}
+          <button onClick={handleEdit} className="button">
+            EDIT
+          </button>
         </div>
-      )}
-
-      {editMode && (
-        <button onClick={handleAddNew} className="add-new-button">
-          + ADD NEW
-        </button>
-      )}
-
-      {!editMode && (
-        <button onClick={handleEdit} className="edit-button">
-          EDIT
-        </button>
       )}
     </div>
   );

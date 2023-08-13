@@ -52,16 +52,17 @@ function PersonalInfo({ personalInfo, setPersonalInfo, previewMode }) {
             onChange={handleInputChange}
           />
 
-          <button onClick={handlePrintButton}>Print</button>
+          <button onClick={handlePrintButton}>Sumbit</button>
         </div>
       ) : (
-        <>
+        <div className="preview">
+          <hr />
           <p>First Name: {personalInfo.firstName}</p>
           <p>Last Name: {personalInfo.lastName}</p>
           <p>Email: {personalInfo.email}</p>
           <p>Phone: {personalInfo.phone}</p>
           <button onClick={handleEditButton}>Edit</button>
-        </>
+        </div>
       )}
     </div>
   );

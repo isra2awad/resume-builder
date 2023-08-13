@@ -1,19 +1,10 @@
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+
 import "./compnents.css";
 
-function Experience() {
+function Experience({ experienceData, setExperienceData, previewMode }) {
   const [editMode, setEditMode] = useState(true);
-  const [jobArr, setJobArr] = useState([
-    {
-      company: "",
-      title: "",
-      tasks: "",
-      start: "",
-      end: "",
-      id: uuidv4(),
-    },
-  ]);
 
   const handleEdit = () => {
     setEditMode(true);
@@ -21,7 +12,7 @@ function Experience() {
 
   const handleChange = (e) => {
     const { className, name, value } = e.target;
-    setJobArr((prevJobArr) =>
+    setExperienceData((prevJobArr) =>
       prevJobArr.map((job) =>
         job.id === className ? { ...job, [name]: value } : job,
       ),
@@ -29,7 +20,7 @@ function Experience() {
   };
 
   const handleAddNew = () => {
-    setJobArr((prevJobArr) =>
+    setExperienceData((prevJobArr) =>
       prevJobArr.concat({
         company: "",
         title: "",
@@ -43,16 +34,18 @@ function Experience() {
 
   const handleDelete = (e) => {
     const jobId = e.target.className;
-    setJobArr((prevJobArr) => prevJobArr.filter((job) => job.id !== jobId));
+    setExperienceData((prevJobArr) =>
+      prevJobArr.filter((job) => job.id !== jobId),
+    );
   };
 
   return (
     <div className="experience-div content">
-      {editMode ? (
+      {editMode && !previewMode ? (
         <div className="edit-experience-div">
           <h2 className="form-header">EXPERIENCE </h2>
-          {jobArr.map((item) => (
-            <div key={item.id} className="job-form">
+          {experienceData.map((item) => (
+            <div key={item.id} className="form">
               <input
                 type="text"
                 name="company"
@@ -95,25 +88,24 @@ function Experience() {
               <button onClick={handleDelete} className={item.id}>
                 Delete
               </button>
-
-              <button
-                onClick={() => setEditMode(false)}
-                className="submit-button"
-              >
-                Print
-              </button>
             </div>
           ))}
-          <button onClick={handleAddNew} className="add-new-button">
-            + ADD NEW
-          </button>
+          <div className="buttons">
+            <button onClick={() => setEditMode(false)} className="button">
+              Submit
+            </button>
+            <button onClick={handleAddNew} className="button">
+              + ADD NEW
+            </button>
+          </div>
         </div>
       ) : (
-        <div>
+        <div className="preview">
           <h4 className="submitted-header">EXPERIENCE</h4>
-          <hr />
-          {jobArr.map((item) => (
-            <div className="job" key={item.id}>
+
+          {experienceData.map((item) => (
+            <div className="preview-item" key={item.id}>
+              <hr />
               <h4>Job Title: {item.title}</h4>
               <p> Company: {item.company}</p>
 

@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import PersonalInfo from "./components/PersonalInfo";
 import Experience from "./components/Experience";
 import Education from "./components/Education";
 import Preview from "./components/Preview";
 import "./App.css";
-
+import "./components/compnents.css";
 function App() {
   const [personalInfo, setPersonalInfo] = useState({
     firstName: "",
@@ -12,9 +13,27 @@ function App() {
     email: "",
     phone: "",
   });
+  const [educationData, setEducationData] = useState([
+    {
+      university: "",
+      major: "",
+      date: "",
+      grade: "",
+      id: uuidv4(),
+    },
+  ]);
 
-  const [experienceData, setExperienceData] = useState([]);
-  const [educationData, setEducationData] = useState([]);
+  const [experienceData, setExperienceData] = useState([
+    {
+      company: "",
+      title: "",
+      tasks: "",
+      start: "",
+      end: "",
+      id: uuidv4(),
+    },
+  ]);
+
   const [previewMode, setPreviewMode] = useState(false);
 
   const handleEditClick = () => {
@@ -22,7 +41,7 @@ function App() {
   };
 
   return (
-    <div className="App">
+    <div className="app">
       <h1>CV Builder App</h1>
       {!previewMode ? (
         <>
@@ -41,7 +60,9 @@ function App() {
             setEducationData={setEducationData}
             previewMode={previewMode} // Pass previewMode to Education
           />
-          <button onClick={() => setPreviewMode(true)}>Preview</button>
+          <button className="button" onClick={() => setPreviewMode(true)}>
+            Preview
+          </button>
         </>
       ) : (
         <Preview
