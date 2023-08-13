@@ -28,8 +28,8 @@ function Preview({ personalInfo, experienceData, educationData, onEditClick }) {
         <h3>Education</h3>
         {educationData.map((item) => (
           <div key={item.id}>
-            <h5>{item.school}</h5>
-            <p>{item.title}</p>
+            <h5>{item.university}</h5>
+            <p>{item.major}</p>
             {item.date !== "" && <p>Graduated {item.date}</p>}
           </div>
         ))}
