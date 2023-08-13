@@ -1,83 +1,120 @@
 import React, { useState } from "react";
-import "./compnents.css";
+import { v4 as uuidv4 } from "uuid";
 
-function Education({ educationList, setEducationList }) {
-  const [school, setSchool] = useState("");
-  const [degree, setDegree] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [isEditing, setIsEditing] = useState(true);
+function Education() {
+  const [editMode, setEditMode] = useState(true);
+  const [degreeArr, setDegreeArr] = useState([
+    {
+      school: "",
+      title: "",
+      date: "",
+      id: uuidv4(),
+    },
+  ]);
 
-  const handleAddEducation = () => {
-    const newEducation = {
-      school,
-      degree,
-      startDate,
-      endDate,
-    };
-
-    setEducationList((prevList) => [...prevList, newEducation]);
-    setSchool("");
-    setDegree("");
-    setStartDate("");
-    setEndDate("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setEditMode(false);
   };
 
-  const handlePrintButton = () => {
-    setIsEditing(false);
+  const handleEdit = () => {
+    setEditMode(true);
   };
 
-  const handleEditButton = () => {
-    setIsEditing(true);
+  const handleChange = (e) => {
+    const { className, name, value } = e.target;
+    setDegreeArr((prevDegreeArr) =>
+      prevDegreeArr.map((degree) =>
+        degree.id === className ? { ...degree, [name]: value } : degree,
+      ),
+    );
+  };
+
+  const handleAddNew = () => {
+    setDegreeArr((prevDegreeArr) =>
+      prevDegreeArr.concat({
+        school: "",
+        title: "",
+        date: "",
+        id: uuidv4(),
+      }),
+    );
+  };
+
+  const handleDelete = (e) => {
+    const degreeId = e.target.className;
+    setDegreeArr((prevDegreeArr) =>
+      prevDegreeArr.filter((degree) => degree.id !== degreeId),
+    );
   };
 
   return (
-    <div className="section">
-      <h2>Education</h2>
-      {isEditing ? (
-        <div className="edit-education">
-          <input
-            type="text"
-            placeholder="School"
-            value={school}
-            onChange={(e) => setSchool(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Degree"
-            value={degree}
-            onChange={(e) => setDegree(e.target.value)}
-          />
-          <input
-            type="text"
-            placeholder="Start Date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            type="text"
-          />
-          <input
-            placeholder="End Date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-          />
-          <button onClick={handlePrintButton}>Print</button>
-          <button onClick={handleAddEducation}>Add Education</button>
+    <div className="education-div content">
+      {editMode ? (
+        <div className="edit-education-div">
+          <h4 className="form-header">
+            EDUCATION{" "}
+            <button onClick={handleSubmit} className="submit-button">
+              SUBMIT
+            </button>
+          </h4>
+          {degreeArr.map((item) => (
+            <div key={item.id}>
+              <input
+                type="text"
+                name="school"
+                placeholder="School"
+                value={item.school}
+                className={item.id}
+                onChange={handleChange}
+              />
+              <input
+                type="text"
+                name="title"
+                placeholder="Title"
+                value={item.title}
+                className={item.id}
+                onChange={handleChange}
+              />
+              <input
+                type="text"
+                name="date"
+                placeholder="Date"
+                value={item.date}
+                className={item.id}
+                onChange={handleChange}
+              />
+              <button onClick={handleDelete} className={item.id}>
+                Delete
+              </button>
+            </div>
+          ))}
         </div>
       ) : (
-        <>
-          <button onClick={handleEditButton}>Edit</button>
-        </>
+        <div>
+          <h4 className="submitted-header">EDUCATION</h4>
+          <hr />
+          {degreeArr.map((item) => (
+            <div key={item.id}>
+              <h5>{item.school}</h5>
+              <p>{item.title}</p>
+              {item.date !== "" && <p>Graduated {item.date}</p>}
+            </div>
+          ))}
+        </div>
       )}
-      <ul>
-        {educationList.map((education, index) => (
-          <li key={index}>
-            <p>School: {education.school}</p>
-            <p>Degree: {education.degree}</p>
-            <p>Start Date: {education.startDate}</p>
-            <p>End Date: {education.endDate}</p>
-          </li>
-        ))}
-      </ul>
+
+      {editMode && (
+        <button onClick={handleAddNew} className="add-new-button">
+          + ADD NEW
+        </button>
+      )}
+
+      {!editMode && (
+        <button onClick={handleEdit} className="edit-button">
+          EDIT
+        </button>
+      )}
     </div>
   );
 }

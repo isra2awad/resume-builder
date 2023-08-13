@@ -1,9 +1,9 @@
 import { useState } from "react";
-import "./App.css";
 import PersonalInfo from "./components/PersonalInfo";
 import Experience from "./components/Experience";
 import Education from "./components/Education";
-// import Preview from "./components/Preview";
+import Preview from "./components/Preview";
+import "./App.css";
 
 function App() {
   const [personalInfo, setPersonalInfo] = useState({
@@ -13,25 +13,44 @@ function App() {
     phone: "",
   });
 
-  const [experienceList, setExperienceList] = useState([]);
+  const [experienceData, setExperienceData] = useState([]);
+  const [educationData, setEducationData] = useState([]);
+  const [previewMode, setPreviewMode] = useState(false);
 
-  const [educationList, setEducationList] = useState([]);
+  const handleEditClick = () => {
+    setPreviewMode(false); // Switch back to editing mode
+  };
 
   return (
     <div className="App">
       <h1>CV Builder App</h1>
-      <PersonalInfo
-        personalInfo={personalInfo}
-        setPersonalInfo={setPersonalInfo}
-      />
-      <Experience
-        experienceList={experienceList}
-        setExperienceList={setExperienceList}
-      />
-      <Education
-        educationList={educationList}
-        setEducationList={setEducationList}
-      />
+      {!previewMode ? (
+        <>
+          <PersonalInfo
+            personalInfo={personalInfo}
+            setPersonalInfo={setPersonalInfo}
+            previewMode={previewMode} // Pass previewMode to PersonalInfo
+          />
+          <Experience
+            experienceData={experienceData}
+            setExperienceData={setExperienceData}
+            previewMode={previewMode} // Pass previewMode to Experience
+          />
+          <Education
+            educationData={educationData}
+            setEducationData={setEducationData}
+            previewMode={previewMode} // Pass previewMode to Education
+          />
+          <button onClick={() => setPreviewMode(true)}>Preview</button>
+        </>
+      ) : (
+        <Preview
+          personalInfo={personalInfo}
+          experienceData={experienceData}
+          educationData={educationData}
+          onEditClick={handleEditClick} // Pass the edit function to Preview
+        />
+      )}
     </div>
   );
 }

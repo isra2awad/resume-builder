@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./compnents.css";
-function PersonalInfo({ personalInfo, setPersonalInfo }) {
+function PersonalInfo({ personalInfo, setPersonalInfo, previewMode }) {
   const [isEditing, setIsEditing] = useState(true);
 
   const handleInputChange = (event) => {
@@ -19,7 +19,7 @@ function PersonalInfo({ personalInfo, setPersonalInfo }) {
   return (
     <div className="section">
       <h2>Personal Information</h2>
-      {isEditing ? (
+      {isEditing && !previewMode ? (
         <div className="edit-personal">
           <input
             type="text"
